@@ -82,10 +82,9 @@ public class CalenderFragment extends ListFragment {
          TextView date = (TextView) view.findViewById(R.id.date);
          TextView time = (TextView) view.findViewById(R.id.time);
 
-
-
-
-
+         MainActivity main = (MainActivity) getActivity();
+         int eventSize = main.eventList.size();
+         date.setText("Number of Events:" + eventSize);
      }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -117,7 +117,13 @@ public class MainActivity extends AppCompatActivity {
             File file = new File(root, "dates.txt");
 
             BufferedReader br = new BufferedReader(new FileReader(file));
-
+            String inLine = br.readLine();
+            while( br.readLine() != null){
+                String[] event = inLine.split(".");
+                Event readEvent = new Event(Integer.parseInt(event[1]), Integer.parseInt(event[2]), Integer.parseInt(event[3]), Integer.parseInt(event[4]), Integer.parseInt(event[5]), event[0]);
+                eventList.add(readEvent);
+                inLine = br.readLine();
+            }
             //loop for reading dates
 
         }catch (IOException e) {
@@ -127,10 +133,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void writeDatesToFile(){
         try {
-            File root = new File(Environment.getExternalStorageDirectory(), "Dates");
-            File file = new File(root, "dates.txt");
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            File root = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Dates");
+            File file = new File(root, "/dates.txt");
+            FileOutputStream fow = new FileOutputStream(file);
+            OutputStreamWriter writer = new OutputStreamWriter(fow);
 
+            for (int i = 0; i < eventList.size(); i++){
+                writer.write(eventList.get(i).Title + "." + eventList.get(i).hour + "." + eventList.get(i).seconds + "." + eventList.get(i).day + "." + eventList.get(i).month + "." + eventList.get(i).year);
+                writer.write("/n");
+            }
+            writer.close();
             //Write loops to store dates
 
         }catch (IOException e) {
@@ -140,15 +152,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void createFile(){
 
-        File root = new File(Environment.getExternalStorageDirectory(), "Dates");
-        if (!root.exists()) {
-            root.mkdirs();
-        }
-        File file = new File(root, "dates.txt");
+        File root = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Dates");
+        root.mkdirs();
+
+        File file = new File(root, "/dates.txt");
     }
 
     public void createDate(int hour, int seconds, int month, int day, int year, String title){
         Event newEvent = new Event(hour, seconds, month, day, year, title);
         eventList.add(newEvent);
+        writeDatesToFile();
     }
 }
