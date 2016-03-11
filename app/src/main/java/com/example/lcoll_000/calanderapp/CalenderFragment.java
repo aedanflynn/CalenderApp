@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +59,33 @@ public class CalenderFragment extends ListFragment {
         return fragment;
     }
 
+    public class EventAdapter extends StableArrayAdapter{
+
+        private final ArrayList<MainActivity.Event> eventList;
+
+        public EventAdapter(Context context, int textViewResourceId, ArrayList<MainActivity.Event> objects) {
+            super(context, textViewResourceId, objects);
+            eventList = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
+            TextView titleView = (TextView) rowView.findViewById(R.id.title);
+            TextView dateView = (TextView) rowView.findViewById(R.id.date);
+            TextView timeView = (TextView) rowView.findViewById(R.id.time);
+
+            MainActivity.Event eventRow = eventList.get(position);
+            titleView.setText(eventRow.Title);
+            dateView.setText(eventRow.day + "/" + eventRow.month + "/" + eventRow.year);
+            timeView.setText(eventRow.hour + ":" + eventRow.seconds);
+
+            return rowView;
+        }
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +95,7 @@ public class CalenderFragment extends ListFragment {
         MainActivity main = (MainActivity) getActivity();
         eventList = main.eventList;
 
-        StableArrayAdapter adapter = new StableArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, eventList);
+        StableArrayAdapter adapter = new StableArrayAdapter(getActivity(),R.layout.rowlayout, eventList);
         setListAdapter(adapter);
     }
 
@@ -84,7 +114,6 @@ public class CalenderFragment extends ListFragment {
 
          MainActivity main = (MainActivity) getActivity();
          int eventSize = main.eventList.size();
-         date.setText("Number of Events:" + eventSize);
      }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -55,13 +55,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Files wont load
         File root = new File(Environment.getExternalStorageDirectory(), "Dates");
         File file = new File(root, "dates.txt");
-        if (file == null){
-            createFile();
-        }else{
-            loadDatesFromFile();
-        }
+        //if (file == null){
+        //    createFile();
+        //}
+        //else{
+        //    loadDatesFromFile();
+        //}
 
         fragmentManager = getFragmentManager();
         getFragmentManager()
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     private void writeDatesToFile(){
         try {
             File root = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Dates");
-            File file = new File(root, "/dates.txt");
+            File file = new File(root, "dates.txt");
             FileOutputStream fow = new FileOutputStream(file);
             OutputStreamWriter writer = new OutputStreamWriter(fow);
 
